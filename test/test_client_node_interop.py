@@ -25,13 +25,9 @@ class TestClientNodeInterop(unittest.TestCase):
 
                 test_client.add_data_point(curr_x, curr_y)
 
-            print(mock.called)
             mock.assert_called()
 
         new_model = test_client.get_local_model()
-
-        print(old_model)
-        print(new_model)
 
         self.assertNotEqual(test_model, new_model)
 

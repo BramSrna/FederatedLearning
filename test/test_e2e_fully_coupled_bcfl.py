@@ -56,18 +56,14 @@ class TestE2eFullyCoupledBcfl(unittest.TestCase):
             test_bot_1.add_data_point(curr_x, curr_y)
 
         old_test_bot_1_model = test_bot_1.get_local_model()
-        print(old_test_bot_1_model)
 
         for _ in range(test_data_threshold):
             curr_x = np.random.randn(1, n_features)[0]
             curr_y = np.random.randn(1)[0]
 
             test_bot_2.add_data_point(curr_x, curr_y)
-        print(old_test_bot_1_model)
 
         old_test_bot_2_model = test_bot_2.get_local_model()
-
-        print(old_test_bot_2_model)
 
         self.assertNotEqual(old_test_bot_1_model, old_test_bot_2_model)
 
