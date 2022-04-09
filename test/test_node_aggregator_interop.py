@@ -24,11 +24,11 @@ class TestNodeAggregatorInterop(unittest.TestCase):
         test_model = Model()
         test_model.train(test_data, test_targets)
 
-        self.assertFalse(test_aggregator.isModelInPool(test_model))
+        self.assertFalse(test_aggregator.is_model_in_pool(test_model))
 
         test_node.receive_candidate_model(test_model, test_data, test_targets)
 
-        self.assertTrue(test_aggregator.isModelInPool(test_model))
+        self.assertTrue(test_aggregator.is_model_in_pool(test_model))
 
 
 if __name__ == "__main__":
