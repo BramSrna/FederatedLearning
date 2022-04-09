@@ -69,21 +69,20 @@ class Aggregator(object):
         self.model_pool = []
         return self.get_aggregated_model()
 
-    def isModelInPool(self, model_to_check):
+    def is_model_in_pool(self, model_to_check):
         for model in self.model_pool:
             if model["MODEL"] == model_to_check:
                 return True
         return False
 
     def receive_valid_model(self, new_model, new_validation_data, new_validation_targets):
-        if self.isModelInPool(new_model):
+        if self.is_model_in_pool(new_model):
             return False
         self.model_pool.append({
             "MODEL": new_model,
             "VALIDATION_DATA": new_validation_data,
             "VALIDATION_TARGETS": new_validation_targets
         })
-        print(id(self), len(self.model_pool))
         self.model_calc_required = True
         if len(self.model_pool) >= self.aggregation_threshold:
             self.handle_aggregation_selection_victory()

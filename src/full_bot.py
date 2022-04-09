@@ -29,4 +29,3 @@ class FullBot(Client, Node, Aggregator):
                 self.aggregator_list.append(new_bot)
             if isinstance(new_bot, Client):
                 self.client_list.append(new_bot)
-        print(id(self), self.bot_list)

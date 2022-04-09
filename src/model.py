@@ -2,6 +2,9 @@ from sklearn import linear_model
 from src.block import Block
 import copy
 
+# https://scikit-learn.org/0.15/modules/generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor.partial_fit
+# https://scikit-learn.org/0.15/modules/scaling_strategies.html
+
 class Model(object):
     def __init__(self):
         self.current_model = linear_model.SGDRegressor()
