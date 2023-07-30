@@ -1,20 +1,31 @@
 from sklearn import linear_model
-from src.block import Block
+from src.blockchain.block import Block
 import copy
+from src.model.model import Model
 
 # https://scikit-learn.org/0.15/modules/generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor.partial_fit
 # https://scikit-learn.org/0.15/modules/scaling_strategies.html
 
-class Model(object):
+class SgdModel(Model):
     def __init__(self):
         self.current_model = linear_model.SGDRegressor()
         self.current_model.coef_ = None
         self.current_model.intercept_ = None
 
-    def get_score(self, test_data, test_targets):
-        return self.current_model.score(test_data, test_targets)
+    def get_score(self, datapoints):
+        data = []
+        targets = []
+        for datapoint in datapoints:
+            data.append(datapoint.get_data())
+            targets.append(datapoint.get_target())
+        return self.current_model.score(data, targets)
 
-    def train(self, data, targets):
+    def train(self, datapoints):
+        data = []
+        targets = []
+        for datapoint in datapoints:
+            data.append(datapoint.get_data())
+            targets.append(datapoint.get_target())
         self.current_model.partial_fit(data, targets)
 
     def __eq__(self, other_model):            
@@ -63,12 +74,10 @@ class Model(object):
 
         return True
 
-    def to_block(self):
-        return Block(self.current_model.coef_, self.current_model.intercept_, None, None)
-
     def set_from_block(self, block):
-        self.current_model.coef_ = copy.deepcopy(block.get_coef())
-        self.current_model.intercept_ = copy.deepcopy(block.get_intercept())
+        model = block.get_model()
+        self.current_model.coef_ = copy.deepcopy(model.get_coef())
+        self.current_model.intercept_ = copy.deepcopy(model.get_intercept())
 
     def set_from_model(self, ref_model):
         self.current_model.coef_ = copy.deepcopy(ref_model.get_coef())
@@ -98,8 +107,11 @@ class Model(object):
         new_coef /= len(model_list)
         new_intercept /= len(model_list)
 
-        aggregated_model = Model()
+        aggregated_model = SgdModel()
         aggregated_model.set_coef(new_coef)
         aggregated_model.set_intercept(new_intercept)
 
         return aggregated_model
+    
+    def predict(self, datapoint):
+        return self.current_model.predict([datapoint.get_data()])
